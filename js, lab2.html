@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ru">
+<style>
+  body{
+  background-color: #D4E6B3;
+}
+</style>
+<head>
+    <title>
+      События
+    </title>
+    <meta charset="UTF-8">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script>
+
+        var settings = {
+            "url": "https://app.ticketmaster.com/discovery/v2/events.json?startDateTime=2020-10-25T17:00:00Z&endDateTime=2021-12-25T17:00:00Z&dmaId=382&apikey=iQlMtxLKB1fbYctpUP52ukHdN6E14eLH",
+            dataType: "json",
+            "type": "GET",
+            "async": true,
+
+        }
+
+        $.ajax(settings).done(function (data) {
+            console.log(data);
+
+            var data_table_header =
+                `
+                <tr>
+                    <th>Название:</th>
+                    <th>Описание:</th>
+                    <th>Ссылка:</th>
+                </tr>
+            `;
+
+            $("#data-table").append(data_table_header);
+
+            $.each(data._embedded.events, function (key, val) {
+
+                var read_data_html = `
+               <tr id = "embedded`+ key + `">
+                    <td>`+ val.name + `</td> 
+                    <td>`+ val.info + `</td>
+                    <td><a href="`+val.url+`">`+ val.url + `</a></td>
+                </tr>`;
+                console.log(read_data_html);
+                $("#data-table").append(read_data_html);
+            });
+        });        
+    </script>
+</head>
+
+<body>
+  
+
+    <div class="container">
+        <table id="data-table">
+        </table>
+    </div>
+</body>
+
+</html>
